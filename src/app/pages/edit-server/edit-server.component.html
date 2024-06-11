@@ -1,0 +1,24 @@
+<form class="flex flex-col gap-2 p-4" [formGroup]="form" (ngSubmit)="addServer()">
+  <mat-form-field class="w-full">
+    <mat-label>Nom du serveur</mat-label>
+    <input matInput type="text" formControlName="name">
+    @if (form.get("name")?.hasError("required")) {
+      <mat-error>Le nom du serveur est obligatoire</mat-error>
+    } @else if (form.get("name")?.hasError("minlength")) {
+      <mat-error>Le nom du serveur doit avoir 3 caractères minimum</mat-error>
+    } @else if (form.get("name")?.hasError("maxlength")) {
+      <mat-error>Le nom du serveur doit avoir 50 caractères maximum</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="w-full">
+    <mat-label>Description du serveur</mat-label>
+    <textarea matInput formControlName="description"></textarea>
+    <mat-error>La description ne peut dépasser 100 caractères</mat-error>
+  </mat-form-field>
+
+  <mat-slide-toggle formControlName="public">Serveur public ?</mat-slide-toggle>
+
+  <button mat-flat-button color="primary" class="w-full">Envoyer</button>
+
+</form>

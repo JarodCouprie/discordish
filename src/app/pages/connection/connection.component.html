@@ -1,0 +1,17 @@
+<form [formGroup]="form" (ngSubmit)="sendCredentials()" class="flex flex-col gap-2 p-4">
+  <mat-form-field class="w-full">
+    <mat-label>Email</mat-label>
+    <input matInput type="text" formControlName="email">
+    @if (form.get("email")?.hasError("required")) {
+      <mat-error>L'email est obligatoire</mat-error>
+    } @else if (form.get("email")?.hasError("email")) {
+      <mat-error>Le format de l'email est incorrect</mat-error>
+    }
+  </mat-form-field>
+  <mat-form-field class="w-full">
+    <mat-label>Mot de passe</mat-label>
+    <input matInput type="text" formControlName="password">
+    <mat-error>Le mot de passe est obligatoire</mat-error>
+  </mat-form-field>
+  <button mat-flat-button color="primary" class="w-full">Connexion</button>
+</form>
