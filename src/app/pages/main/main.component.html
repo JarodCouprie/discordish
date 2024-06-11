@@ -1,18 +1,17 @@
 <main class="flex h-dvh bg-slate-900 text-slate-100">
   <aside class="flex flex-col gap-1 p-4 bg-slate-950 h-full justify-between w-60">
     <div class="flex flex-col gap-2">
-      <div routerLink="/add-server"
-        class="rounded-full size-12 grid place-items-center bg-slate-700 cursor-pointer hover:rounded transition-all ease-in duration-100">
+      <div routerLink="/add-server" matTooltip="Nouveau serveur" matTooltipPosition="right"
+           class="rounded-full size-12 grid place-items-center bg-slate-700 cursor-pointer hover:rounded transition-all ease-in duration-100">
         <mat-icon fontIcon="add" class="text-emerald-500"></mat-icon>
       </div>
-      <div>
-        <img src="https://api.dicebear.com/8.x/bottts-neutral/svg?seed=qsdfsqdf"
-             class="rounded-full size-12 hover:rounded cursor-pointer transition-all ease-in duration-100">
-      </div>
-      <div>
-        <img src="https://api.dicebear.com/8.x/bottts-neutral/svg?seed=qsdf"
-             class="rounded-full size-12 hover:rounded cursor-pointer transition-all ease-in duration-100">
-      </div>
+      @for (server of servers; track $index) {
+        <div>
+          <img [src]="server.urlLogo"
+               class="rounded-full size-12 hover:rounded cursor-pointer transition-all ease-in duration-100"
+               [matTooltip]="server.name" matTooltipPosition="right">
+        </div>
+      }
     </div>
     <div class="flex gap-2 items-center flex-wrap">
       <img src="https://api.dicebear.com/8.x/adventurer-neutral/svg?seed=Jarod" class="rounded-full size-8">

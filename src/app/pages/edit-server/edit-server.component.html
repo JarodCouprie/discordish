@@ -17,8 +17,16 @@
     <mat-error>La description ne peut dépasser 100 caractères</mat-error>
   </mat-form-field>
 
-  <mat-slide-toggle formControlName="public">Serveur public ?</mat-slide-toggle>
+  <mat-form-field class="w-full">
+    <mat-label>Logo du serveur</mat-label>
+    <input matInput type="text" formControlName="urlLogo">
+  </mat-form-field>
 
-  <button mat-flat-button color="primary" class="w-full">Envoyer</button>
+  <mat-slide-toggle formControlName="public" color="primary">Serveur public ?</mat-slide-toggle>
+
+  <div class="flex gap-2 items-center justify-end">
+    <button mat-button type="button" (click)="goBack()" class="w-40">Annuler</button>
+    <button mat-flat-button color="primary" class="w-40" type="submit">Envoyer</button>
+  </div>
 
 </form>

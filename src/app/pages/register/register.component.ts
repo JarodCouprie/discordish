@@ -1,34 +1,31 @@
 import {Component, inject} from '@angular/core';
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import {MatButton} from "@angular/material/button";
 import {MatError, MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
-import {MatSlideToggle} from "@angular/material/slide-toggle";
-import {MatButton} from "@angular/material/button";
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 
 @Component({
-  selector: 'app-connection',
+  selector: 'app-register',
   standalone: true,
   imports: [
+    MatButton,
+    MatError,
     MatFormField,
-    FormsModule,
     MatInput,
     MatLabel,
-    MatSlideToggle,
-    MatButton,
-    ReactiveFormsModule,
-    MatError,
+    ReactiveFormsModule
   ],
-  templateUrl: './connection.component.html',
-  styleUrl: './connection.component.scss'
+  templateUrl: './register.component.html',
 })
-export class ConnectionComponent {
+export class RegisterComponent {
   formBuilder: FormBuilder = inject(FormBuilder);
   http = inject(HttpClient);
   form: FormGroup = this.formBuilder.group(
     {
       email: ["", [Validators.required, Validators.email]],
       password: ["", [Validators.required]],
+      passwordConfirm: ["", [Validators.required]]
     }
   );
 
