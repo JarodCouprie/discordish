@@ -10,16 +10,31 @@
         <mat-error>Le format de l'email est incorrect</mat-error>
       }
     </mat-form-field>
+
     <mat-form-field class="w-full">
       <mat-label>Mot de passe</mat-label>
-      <input matInput type="text" formControlName="password">
+      <input matInput type="password" formControlName="password" (keyup)="verifySamePassword()">
       <mat-error>Le mot de passe est obligatoire</mat-error>
     </mat-form-field>
+
+    <app-rule [text]="form.get('password')?.value" regexString="[A-Z]">
+      Le mot de passe doit contenir une majuscule
+    </app-rule>
+    <app-rule [text]="form.get('password')?.value" regexString="[a-z]">
+      Le mot de passe doit contenir une minuscule
+    </app-rule>
+    <app-rule [text]="form.get('password')?.value" regexString="[0-9]">
+      Le mot de passe doit contenir un chiffre
+    </app-rule>
+
     <mat-form-field class="w-full">
       <mat-label>Confirmation du mot de passe</mat-label>
-      <input matInput type="text" formControlName="passwordConfirm">
+      <input matInput type="password" formControlName="passwordConfirm" (keyup)="verifySamePassword()">
       <mat-error>Le mot de passe de confirmation est obligatoire</mat-error>
     </mat-form-field>
+    @if (!samePassword) {
+      <mat-error>Les mots de passe ne sont pas identiques</mat-error>
+    }
     <button mat-flat-button color="primary" class="w-full">Créer compte</button>
   </form>
 </div>

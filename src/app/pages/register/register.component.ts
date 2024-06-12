@@ -4,6 +4,10 @@ import {MatError, MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
+import {MatIcon} from "@angular/material/icon";
+import {RuleComponent} from "../../components/rule/rule.component";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-register',
@@ -14,13 +18,17 @@ import {HttpClient} from "@angular/common/http";
     MatFormField,
     MatInput,
     MatLabel,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatIcon,
+    RuleComponent
   ],
   templateUrl: './register.component.html',
 })
 export class RegisterComponent {
   formBuilder: FormBuilder = inject(FormBuilder);
   http = inject(HttpClient);
+  snackBar: MatSnackBar = inject(MatSnackBar);
+  router: Router = inject(Router);
   form: FormGroup = this.formBuilder.group(
     {
       email: ["", [Validators.required, Validators.email]],
@@ -29,8 +37,25 @@ export class RegisterComponent {
     }
   );
 
-  sendCredentials() {
-    console.log(this.form.value);
-    if (this.form.invalid) return;
+  samePassword: boolean = true;
+
+  verifySamePassword() {
+    if (this.form.get('passwordConfirm')?.dirty) {
+      this.samePassword = this.form.get("password")?.value === this.form.get("passwordConfirm")?.value;
+    }
   }
+
+  sendCredentials() {
+    if (this.form.invalid && !this.samePassword) return;
+    this.http.post("http://localhost:3000/user/register", this.form.value).subscribe((user) => {
+      console.log(user);
+      this.snackBar.open("L'utilisateur a bien été créé", undefined, {
+        duration: 3000,
+        horizontalPosition: "right",
+        verticalPosition: "top"
+      });
+      this.router.navigateByUrl("/").then();
+    })
+  }
+
 }

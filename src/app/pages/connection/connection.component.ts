@@ -5,6 +5,7 @@ import {MatInput} from "@angular/material/input";
 import {MatSlideToggle} from "@angular/material/slide-toggle";
 import {MatButton} from "@angular/material/button";
 import {HttpClient} from "@angular/common/http";
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-connection',
@@ -20,11 +21,11 @@ import {HttpClient} from "@angular/common/http";
     MatError,
   ],
   templateUrl: './connection.component.html',
-  styleUrl: './connection.component.scss'
 })
 export class ConnectionComponent {
   formBuilder: FormBuilder = inject(FormBuilder);
   http = inject(HttpClient);
+  router = inject(Router);
   form: FormGroup = this.formBuilder.group(
     {
       email: ["", [Validators.required, Validators.email]],
@@ -33,7 +34,10 @@ export class ConnectionComponent {
   );
 
   sendCredentials() {
-    console.log(this.form.value);
     if (this.form.invalid) return;
+    this.http.post("http://localhost:3000/user/login", this.form.value).subscribe((res: any) => {
+      localStorage.setItem("jwt", res.jwt)
+      this.router.navigateByUrl("/").then();
+    })
   }
 }
