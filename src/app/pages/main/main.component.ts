@@ -19,7 +19,14 @@ export class MainComponent implements OnInit {
   servers: Server[] = [];
 
   ngOnInit(): void {
-    this.http.get<Server[]>("http://localhost:3000/server").subscribe(value => {
+    const jwt = localStorage.getItem("jwt");
+
+    if (!jwt) return;
+
+    this.http.get<Server[]>("http://localhost:3000/server", {
+        headers: {Authorization: `Bearer ${jwt}`}
+      }
+    ).subscribe(value => {
       this.servers = value;
     })
   }

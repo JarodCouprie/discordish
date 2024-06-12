@@ -1,32 +1,66 @@
-<form class="flex flex-col gap-2 p-4" [formGroup]="form" (ngSubmit)="addServer()">
-  <mat-form-field class="w-full">
-    <mat-label>Nom du serveur</mat-label>
-    <input matInput type="text" formControlName="name">
-    @if (form.get("name")?.hasError("required")) {
-      <mat-error>Le nom du serveur est obligatoire</mat-error>
-    } @else if (form.get("name")?.hasError("minlength")) {
-      <mat-error>Le nom du serveur doit avoir 3 caractères minimum</mat-error>
-    } @else if (form.get("name")?.hasError("maxlength")) {
-      <mat-error>Le nom du serveur doit avoir 50 caractères maximum</mat-error>
-    }
-  </mat-form-field>
+<div class="flex">
+  <form class="flex flex-col gap-2 p-4 flex-1" [formGroup]="form" (ngSubmit)="addServer()">
+    <mat-form-field class="w-full">
+      <mat-label>Nom du serveur</mat-label>
+      <input matInput type="text" formControlName="name">
+      @if (form.get("name")?.hasError("required")) {
+        <mat-error>Le nom du serveur est obligatoire</mat-error>
+      } @else if (form.get("name")?.hasError("minlength")) {
+        <mat-error>Le nom du serveur doit avoir 3 caractères minimum</mat-error>
+      } @else if (form.get("name")?.hasError("maxlength")) {
+        <mat-error>Le nom du serveur doit avoir 50 caractères maximum</mat-error>
+      }
+    </mat-form-field>
 
-  <mat-form-field class="w-full">
-    <mat-label>Description du serveur</mat-label>
-    <textarea matInput formControlName="description"></textarea>
-    <mat-error>La description ne peut dépasser 100 caractères</mat-error>
-  </mat-form-field>
+    <mat-form-field class="w-full">
+      <mat-label>Description du serveur</mat-label>
+      <textarea matInput formControlName="description"></textarea>
+      <mat-error>La description ne peut dépasser 100 caractères</mat-error>
+    </mat-form-field>
 
-  <mat-form-field class="w-full">
-    <mat-label>Logo du serveur</mat-label>
-    <input matInput type="text" formControlName="urlLogo">
-  </mat-form-field>
+    <mat-form-field class="w-full">
+      <mat-label>Logo du serveur</mat-label>
+      <input matInput type="text" formControlName="urlLogo">
+    </mat-form-field>
 
-  <mat-slide-toggle formControlName="public" color="primary">Serveur public ?</mat-slide-toggle>
+    <mat-slide-toggle formControlName="public" color="primary">Serveur public ?</mat-slide-toggle>
 
-  <div class="flex gap-2 items-center justify-end">
-    <button mat-button type="button" (click)="goBack()" class="w-40">Annuler</button>
-    <button mat-flat-button color="primary" class="w-40" type="submit">Envoyer</button>
+    <div class="flex gap-2 items-center justify-end">
+      <button mat-button type="button" (click)="goBack()" class="w-40">Annuler</button>
+      <button mat-flat-button color="primary" class="w-40" type="submit">Envoyer</button>
+    </div>
+  </form>
+  <div class="flex-1">
+    <table mat-table [dataSource]="servers" class="example-table"
+           matSort (matSortChange)="sortChange($event)">
+      <!-- Image Column -->
+      <ng-container matColumnDef="urlLogo">
+        <th mat-header-cell *matHeaderCellDef>Image</th>
+        <td mat-cell *matCellDef="let row">
+          <img [attr.src]="row.urlLogo"
+               class="rounded-full size-8 hover:rounded cursor-pointer transition-all ease-in duration-100">
+        </td>
+      </ng-container>
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Nom</th>
+        <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+      </ng-container>
+      <!-- Description Column -->
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+        <td mat-cell *matCellDef="let row">{{ row.description }}</td>
+      </ng-container>
+      <!-- Description Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let row">
+          <button mat-button color="primary">rejoindre</button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
   </div>
-
-</form>
+</div>
