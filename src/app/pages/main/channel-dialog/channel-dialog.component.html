@@ -1,0 +1,13 @@
+<form class="p-8 flex flex-col gap-4 justify-start" [formGroup]="form">
+  <span class="text-xl font-semibold">Nouveau salon</span>
+  <mat-form-field class="w-full">
+    <mat-label>Nom du salon</mat-label>
+    <input matInput type="text" formControlName="name">
+    <mat-error>Le nom est obligatoire</mat-error>
+  </mat-form-field>
+
+  <div class="flex items-center gap-4 justify-end">
+    <button mat-button type="button" (click)="onNoClick()">Annuler</button>
+    <button mat-flat-button color="primary" type="submit" (click)="sendChannelData()">Créer</button>
+  </div>
+</form>

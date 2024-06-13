@@ -107,4 +107,22 @@ export class EditServerComponent implements OnInit {
     this.sortField = $event.active;
     this.sortOrder = $event.direction;
   }
+
+  joinServer(server: Server) {
+    const jwt = localStorage.getItem('jwt');
+
+    if (jwt) {
+      this.http
+        .post('http://localhost:3000/user/join-server', server)
+        .subscribe(() => {
+          this.snackBar.open(`Vous avez rejoint le serveur ${server.name}`, undefined, {
+            duration: 3000,
+            horizontalPosition: "right",
+            verticalPosition: "top"
+          });
+          this.router.navigateByUrl('/').then();
+        });
+    }
+  }
+
 }

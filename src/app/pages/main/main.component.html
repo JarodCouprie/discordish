@@ -1,6 +1,6 @@
-<main class="flex h-dvh bg-slate-900 text-slate-100">
-  <aside class="flex flex-col gap-1 p-4 bg-slate-950 h-full justify-between w-60">
-    <div class="flex flex-col gap-2">
+<main class="flex h-dvh bg-slate-800 text-slate-100 w-full">
+  <aside class="flex gap-1 bg-slate-900 h-full">
+    <div class="flex flex-col gap-2 bg-slate-950 p-4">
       <div routerLink="/add-server" matTooltip="Nouveau serveur" matTooltipPosition="right"
            class="rounded-full size-12 grid place-items-center bg-slate-700 cursor-pointer hover:rounded transition-all ease-in duration-100">
         <mat-icon fontIcon="add" class="text-emerald-500"></mat-icon>
@@ -9,51 +9,69 @@
         <div>
           <img [src]="server.urlLogo"
                class="rounded-full size-12 hover:rounded cursor-pointer transition-all ease-in duration-100"
-               [matTooltip]="server.name" matTooltipPosition="right">
+               [matTooltip]="server.name" matTooltipPosition="right" (click)="onServerClick(server)">
         </div>
       }
     </div>
-    <div class="flex gap-2 items-center flex-wrap">
-      <img src="https://api.dicebear.com/8.x/adventurer-neutral/svg?seed=Jarod" class="rounded-full size-8">
-      <span class="text-sm">Jarod Couprie</span>
-      <mat-icon fontIcon="settings" class="cursor-pointer" routerLink="/profile"></mat-icon>
+    <div class="flex flex-col justify-between p-4 w-60">
+      <div class="flex flex-col gap-4">
+        @if (serverClicked.name !== "") {
+          <div class="flex flex-col gap-2">
+            <div class="text-xl font-semibold">{{ serverClicked.name }}</div>
+            <button mat-button (click)="openNewChannelDialog()">Nouveau salon</button>
+          </div>
+          <div class="flex flex-col justify-start gap-2">
+            @for (channel of channels; track $index) {
+              <button class="p-2 rounded-sm" [class.bg-slate-800]="channel.name === channelClicked.name"
+                      (click)="onChannelClick(channel)">
+              <span class="flex justify-start">
+                {{ channel.name }}
+              </span>
+              </button>
+            }
+          </div>
+        }
+      </div>
+      <div class="flex gap-2 items-center p-2 rounded bg-slate-900 justify-between">
+        <div class="flex gap-2 items-center">
+          <img src="https://api.dicebear.com/8.x/adventurer-neutral/svg?seed=Jarod" class="rounded-full size-8">
+          <div class="text-sm text-nowrap">Jarod Couprie</div>
+        </div>
+        <mat-icon fontIcon="settings" class="cursor-pointer" routerLink="/profile"></mat-icon>
+      </div>
     </div>
   </aside>
 
-  <div class="p-4 flex flex-col gap-2">
-    <div class="flex gap-2">
-      <img src="https://api.dicebear.com/8.x/adventurer-neutral/svg?seed=Jarod" class="rounded-full size-12">
-      <div class="flex flex-col gap-2">
-        <div class="text-xl font-semibold hover:underline cursor-pointer text-slate-400">Jarod Couprie</div>
-        <div class="text-sm">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab adipisci, alias architecto
-          assumenda
-          aut consequatur dolor ducimus explicabo fuga illo in ipsa molestiae necessitatibus nesciunt nostrum quia
-          voluptatibus? Eaque, maiores?
+  <div class="flex flex-col gap-2 w-full h-full justify-between">
+    <div class="flex flex-col-reverse gap-4 p-4 overflow-scroll">
+      @for (message of messages; track $index) {
+        <div class="flex gap-2 w-full">
+          <img src="{{message.user.avatarUrl}}" class="rounded-full size-10">
+          <div class="flex flex-col gap-1">
+            <div class="flex items-center gap-4">
+              <div
+                class="text-sm font-semibold hover:underline decoration-slate-400 cursor-pointer text-slate-400">{{ message.user.firstname | titlecase }} {{ message.user.lastname | titlecase }}
+              </div>
+              <div class="text-xs">
+                {{ message.createdAt | date:"dd MMM yyyy à HH:mm" }}
+              </div>
+            </div>
+            <div class="">
+              {{ message.content }}
+            </div>
+          </div>
         </div>
-      </div>
+      }
     </div>
-    <div class="flex p-1 gap-2">
-      <img src="https://api.dicebear.com/8.x/adventurer-neutral/svg?seed=Théo" class="rounded-full size-12">
-      <div class="flex flex-col gap-2">
-        <div class="text-xl font-semibold hover:underline cursor-pointer text-slate-400">Théo Roblin</div>
-        <div class="text-sm">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti dolor, fuga
-          necessitatibus
-          quaerat quam quo repellendus. Ad at atque beatae dolore dolorem inventore labore, minus neque nesciunt quas
-          sit suscipit?
-        </div>
-      </div>
+    <div class="w-full">
+      @if (channels.length > 0) {
+        <form class="w-full p-4" [formGroup]="form">
+          <input type="text" formControlName="message" class="w-full text-slate-950 h-10 rounded px-4"
+                 placeholder="Taper un message"
+                 (keydown.enter)="sendMessage()">
+        </form>
+      }
     </div>
-    <div class="flex p-1 gap-2">
-      <img src="https://api.dicebear.com/8.x/adventurer-neutral/svg?seed=Ethan" class="rounded-full size-12">
-      <div class="flex flex-col gap-2">
-        <div class="text-xl font-semibold hover:underline cursor-pointer text-slate-400">Ethan Collignon</div>
-        <div class="text-sm">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam cumque eos impedit natus
-          nulla quibusdam quidem recusandae rem, sunt! Alias aliquid beatae commodi exercitationem ipsum nesciunt omnis
-          similique sunt tempore!
-        </div>
-      </div>
-    </div>
-
   </div>
 
 </main>
