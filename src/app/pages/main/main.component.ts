@@ -49,7 +49,7 @@ export class MainComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    this.http.get<Server[]>("http://localhost:3000/server"
+    this.http.get<Server[]>("http://localhost:3000/server/own"
     ).subscribe(value => {
       this.servers = value;
       if (this.servers.length) {
@@ -64,8 +64,10 @@ export class MainComponent implements OnInit {
     this.serverClicked = server;
     this.http.get<Channel[]>(`http://localhost:3000/channel/getByServerId/${server._id}`
     ).subscribe(channels => {
+      this.channels = [];
+      this.messages = [];
       this.channels = channels;
-      if (this.channels.length) {
+      if (this.channels.length > 0) {
         this.channelClicked = this.channels[0];
         this.onChannelClick(this.channelClicked);
       }

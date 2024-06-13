@@ -33,6 +33,9 @@ export class RegisterComponent {
     {
       email: ["", [Validators.required, Validators.email]],
       password: ["", [Validators.required]],
+      firstname: ["", [Validators.required]],
+      avatarUrl: ["", [Validators.required]],
+      lastname: ["", [Validators.required]],
       passwordConfirm: ["", [Validators.required]]
     }
   );
@@ -48,7 +51,6 @@ export class RegisterComponent {
   sendCredentials() {
     if (this.form.invalid && !this.samePassword) return;
     this.http.post("http://localhost:3000/user/register", this.form.value).subscribe((user) => {
-      console.log(user);
       this.snackBar.open("L'utilisateur a bien été créé", undefined, {
         duration: 3000,
         horizontalPosition: "right",

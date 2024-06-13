@@ -2,6 +2,24 @@
   <h4>Création de votre compte Discordish</h4>
   <form [formGroup]="form" (ngSubmit)="sendCredentials()" class="flex flex-col gap-2 p-4">
     <mat-form-field class="w-full">
+      <mat-label>Prénom</mat-label>
+      <input matInput type="text" formControlName="firstname">
+      <mat-error>Le prénom est obligatoire</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="w-full">
+      <mat-label>Nom</mat-label>
+      <input matInput type="text" formControlName="lastname">
+      <mat-error>Le nom est obligatoire</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="w-full">
+      <mat-label>Lien de la photo de profil</mat-label>
+      <input matInput type="text" formControlName="avatarUrl">
+      <mat-error>Le nom est obligatoire</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="w-full">
       <mat-label>Email</mat-label>
       <input matInput type="text" formControlName="email">
       @if (form.get("email")?.hasError("required")) {
