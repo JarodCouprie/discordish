@@ -10,11 +10,12 @@
   </mat-form-field>
   <mat-form-field class="w-full">
     <mat-label>Mot de passe</mat-label>
-    <input matInput type="text" formControlName="password">
+    <input matInput type="password" formControlName="password">
     <mat-error>Le mot de passe est obligatoire</mat-error>
   </mat-form-field>
   <div class="flex gap-4 items-center">
-    <button mat-stroked-button color="primary" class="w-full" routerLink="/register">Créer un compte</button>
-    <button mat-flat-button color="primary" class="w-full">Connexion</button>
+    <button mat-stroked-button color="primary" class="w-full" routerLink="/register" type="button">Créer un compte
+    </button>
+    <button mat-flat-button color="primary" class="w-full" type="submit">Connexion</button>
   </div>
 </form>
