@@ -32,7 +32,11 @@
     <mat-form-field class="w-full">
       <mat-label>Mot de passe</mat-label>
       <input matInput type="password" formControlName="password" (keyup)="verifySamePassword()">
-      <mat-error>Le mot de passe est obligatoire</mat-error>
+      @if (form.get("password")?.hasError("required")) {
+        <mat-error>Le mot de passe est obligatoire</mat-error>
+      } @else{
+        <mat-error>Le mot de passe n'est pas au bon format</mat-error>
+      }
     </mat-form-field>
 
     <app-rule [text]="form.get('password')?.value" regexString="[A-Z]">
@@ -53,6 +57,9 @@
     @if (!samePassword) {
       <mat-error>Les mots de passe ne sont pas identiques</mat-error>
     }
-    <button mat-flat-button color="primary" class="w-full">Créer compte</button>
+    <div class="flex gap-4 items-center">
+      <button mat-stroked-button color="primary" class="w-full" routerLink="/login">Page de connexion</button>
+      <button mat-flat-button color="primary" class="w-full">Créer compte</button>
+    </div>
   </form>
 </div>

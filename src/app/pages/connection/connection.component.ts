@@ -5,7 +5,7 @@ import {MatInput} from "@angular/material/input";
 import {MatSlideToggle} from "@angular/material/slide-toggle";
 import {MatButton} from "@angular/material/button";
 import {HttpClient} from "@angular/common/http";
-import {Router} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-connection',
@@ -19,6 +19,7 @@ import {Router} from '@angular/router';
     MatButton,
     ReactiveFormsModule,
     MatError,
+    RouterLink,
   ],
   templateUrl: './connection.component.html',
 })

@@ -7,7 +7,7 @@ import {HttpClient} from "@angular/common/http";
 import {MatIcon} from "@angular/material/icon";
 import {RuleComponent} from "../../components/rule/rule.component";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {Router} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-register',
@@ -20,7 +20,8 @@ import {Router} from "@angular/router";
     MatLabel,
     ReactiveFormsModule,
     MatIcon,
-    RuleComponent
+    RuleComponent,
+    RouterLink
   ],
   templateUrl: './register.component.html',
 })
@@ -32,14 +33,13 @@ export class RegisterComponent {
   form: FormGroup = this.formBuilder.group(
     {
       email: ["", [Validators.required, Validators.email]],
-      password: ["", [Validators.required]],
+      password: ["", [Validators.required, Validators.pattern(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).+$/)]],
       firstname: ["", [Validators.required]],
       avatarUrl: ["", [Validators.required]],
       lastname: ["", [Validators.required]],
       passwordConfirm: ["", [Validators.required]]
     }
   );
-
   samePassword: boolean = true;
 
   verifySamePassword() {

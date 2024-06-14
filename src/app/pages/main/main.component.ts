@@ -1,7 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {MatIcon, MatIconModule} from "@angular/material/icon";
 import {Router, RouterLink} from "@angular/router";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse, HttpResponse} from "@angular/common/http";
 import {MatTooltip} from "@angular/material/tooltip";
 import {Server} from "../../models/Server.type";
 import {Message} from "../../models/Message.type";
@@ -13,6 +13,8 @@ import {DatePipe, TitleCasePipe} from "@angular/common";
 import {MatError, MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {User} from "../../models/User.type";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-main',
@@ -29,6 +31,8 @@ export class MainComponent implements OnInit {
   servers: Server[] = [];
   messages: Message[] = [];
   channels: Channel[] = [];
+  users: User[] = [];
+  snackBar: MatSnackBar = inject(MatSnackBar);
   formBuilder: FormBuilder = inject(FormBuilder);
   form: FormGroup = this.formBuilder.group(
     {
@@ -49,15 +53,27 @@ export class MainComponent implements OnInit {
   };
 
   ngOnInit(): void {
+    this.getServerOwnByUser();
+  }
+
+  getServerOwnByUser() {
     this.http.get<Server[]>("http://localhost:3000/server/own"
-    ).subscribe(value => {
-      this.servers = value;
-      if (this.servers.length) {
-        this.serverClicked = this.servers[0]
+    ).subscribe(servers => {
+      this.servers = servers;
+      if (servers.length > 0) {
+        this.serverClicked = servers[0];
         this.onServerClick(this.serverClicked);
+        this.getUserFromServer(this.serverClicked._id);
       }
     })
+  }
 
+  getUserFromServer(serverId: string) {
+    this.http.get<User[]>(`http://localhost:3000/user/server/${serverId}`).subscribe((users) => {
+      if (users.length > 0) {
+        this.users = users;
+      }
+    })
   }
 
   onServerClick(server: Server) {
@@ -71,6 +87,7 @@ export class MainComponent implements OnInit {
         this.channelClicked = this.channels[0];
         this.onChannelClick(this.channelClicked);
       }
+      this.getUserFromServer(this.serverClicked._id);
     })
   }
 
@@ -114,5 +131,49 @@ export class MainComponent implements OnInit {
       this.getMessagesFromChannel(channelId);
       this.form.reset();
     });
+  }
+
+  block(userId: string) {
+    this.http.put<HttpResponse<any>>(`http://localhost:3000/server/block/${this.serverClicked._id}`, {userId}).subscribe(
+      {
+        next: () => {
+          return this.snackBar.open("L'utilisateur a été bloqué", undefined, {
+            duration: 3000,
+            horizontalPosition: "center",
+            verticalPosition: "top"
+          });
+        },
+        error: err => {
+          if (err.status === 200) return;
+          return this.snackBar.open("Erreur lors du blocage de l'utilisateur", undefined, {
+            duration: 3000,
+            horizontalPosition: "center",
+            verticalPosition: "top",
+          });
+        }
+      }
+    );
+  }
+
+  unblock(userId: string) {
+    this.http.put<HttpResponse<any>>(`http://localhost:3000/server/unblock/${this.serverClicked._id}`, {userId}).subscribe(
+      {
+        next: () => {
+          return this.snackBar.open("L'utilisateur a été débloqué", undefined, {
+            duration: 3000,
+            horizontalPosition: "center",
+            verticalPosition: "top"
+          });
+        },
+        error: err => {
+          if (err.status === 200) return;
+          return this.snackBar.open("Erreur lors du déblocage de l'utilisateur", undefined, {
+            duration: 3000,
+            horizontalPosition: "center",
+            verticalPosition: "top",
+          });
+        }
+      }
+    );
   }
 }

@@ -13,5 +13,8 @@
     <input matInput type="text" formControlName="password">
     <mat-error>Le mot de passe est obligatoire</mat-error>
   </mat-form-field>
-  <button mat-flat-button color="primary" class="w-full">Connexion</button>
+  <div class="flex gap-4 items-center">
+    <button mat-stroked-button color="primary" class="w-full" routerLink="/register">Créer un compte</button>
+    <button mat-flat-button color="primary" class="w-full">Connexion</button>
+  </div>
 </form>
