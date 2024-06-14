@@ -5,32 +5,37 @@
            class="rounded-full size-12 grid place-items-center bg-slate-700 cursor-pointer hover:rounded transition-all ease-in duration-100">
         <mat-icon fontIcon="add" class="text-emerald-500"></mat-icon>
       </div>
-      @for (server of servers; track $index) {
-        <div>
-          <img [src]="server.urlLogo"
-               class="rounded-full size-12 hover:rounded cursor-pointer transition-all ease-in duration-100"
-               [matTooltip]="server.name" matTooltipPosition="right" (click)="onServerClick(server)">
-        </div>
-      }
-    </div>
-    <div class="flex flex-col justify-between p-4 w-60">
-      <div class="flex flex-col gap-4">
-        @if (serverClicked.name !== "") {
-          <div class="flex flex-col gap-2">
-            <div class="text-xl font-semibold">{{ serverClicked.name }}</div>
-            <button mat-button (click)="openNewChannelDialog()">Nouveau salon</button>
+      <div class="flex flex-col gap-2 overflow-scroll">
+        @for (server of servers; track $index) {
+          <div>
+            <img [src]="server.urlLogo"
+                 class="rounded-full size-12 hover:rounded-sm cursor-pointer transition-all ease-in duration-100"
+                 [class.rounded-sm]="server._id === serverClicked._id"
+                 [matTooltip]="server.name" matTooltipPosition="right" (click)="onServerClick(server)">
           </div>
-          <div class="flex flex-col justify-start gap-2">
-            @for (channel of channels; track $index) {
-              <button class="p-2 rounded-sm" [class.bg-slate-800]="channel.name === channelClicked.name"
-                      (click)="onChannelClick(channel)">
+        }
+      </div>
+    </div>
+    <div class="flex flex-col justify-between w-60">
+      <div class="flex flex-col gap-4 overflow-scroll">
+        <div class="p-4">
+          @if (serverClicked.name !== "") {
+            <div class="flex flex-col gap-2">
+              <div class="text-xl font-semibold">{{ serverClicked.name }}</div>
+              <button mat-button (click)="openNewChannelDialog()">Nouveau salon</button>
+            </div>
+            <div class="flex flex-col justify-start gap-2">
+              @for (channel of channels; track $index) {
+                <button class="p-2 rounded-sm" [class.bg-slate-800]="channel._id === channelClicked._id"
+                        (click)="onChannelClick(channel)">
               <span class="flex justify-start">
                 {{ channel.name }}
               </span>
-              </button>
-            }
-          </div>
-        }
+                </button>
+              }
+            </div>
+          }
+        </div>
       </div>
       <div class="flex gap-2 items-center p-2 rounded bg-slate-900 justify-between">
         <div class="flex gap-2 items-center">
